@@ -53,25 +53,29 @@
 	height: 150px;
 }
 
+.touchControls-dPad-wrapper {
+	position: relative;
+}
+
 .touchControl-up {
 	width:50px;
 	height:50px;
-	position: relative;
+	position: absolute;
 	top: 0;
 	left: 50px;
 }
 .touchControl-down {
 	width:50px;
 	height:50px;
-	position: relative;
-	top: 50px;
+	position: absolute;
+	top: 100px;
 	left: 50px;
 }
 .touchControl-left {
 	width:50px;
 	height:50px;
-	position: relative;
-	top: -50px;
+	position: absolute;
+	top: 50px;
 	left: 0;
 }
 .touchControl-right {
@@ -79,5 +83,5 @@
 	height:50px;
 	position: absolute;
 	top: 50px;
-	right: 0;
+	left: 100px;
 }

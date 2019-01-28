@@ -120,10 +120,12 @@ class RunPage extends Component {
       <TouchControl classNameForStyling="a" button={Controller.BUTTON_A} emitter={this.state.touchControlSignal}>A</TouchControl>
       <TouchControl classNameForStyling="b" button={Controller.BUTTON_B} emitter={this.state.touchControlSignal}>B</TouchControl>
       <div className="touchControls-dPad">
-        <TouchControl classNameForStyling="up" button={Controller.BUTTON_UP} emitter={this.state.touchControlSignal}>U</TouchControl>
-        <TouchControl classNameForStyling="down" button={Controller.BUTTON_DOWN} emitter={this.state.touchControlSignal}>D</TouchControl>
-        <TouchControl classNameForStyling="left" button={Controller.BUTTON_LEFT} emitter={this.state.touchControlSignal}>L</TouchControl>
-        <TouchControl classNameForStyling="right" button={Controller.BUTTON_RIGHT} emitter={this.state.touchControlSignal}>R</TouchControl>
+        <div className="touchControls-dPad-wrapper">
+          <TouchControl classNameForStyling="up" button={Controller.BUTTON_UP} emitter={this.state.touchControlSignal}>U</TouchControl>
+          <TouchControl classNameForStyling="down" button={Controller.BUTTON_DOWN} emitter={this.state.touchControlSignal}>D</TouchControl>
+          <TouchControl classNameForStyling="left" button={Controller.BUTTON_LEFT} emitter={this.state.touchControlSignal}>L</TouchControl>
+          <TouchControl classNameForStyling="right" button={Controller.BUTTON_RIGHT} emitter={this.state.touchControlSignal}>R</TouchControl>
+        </div>
       </div>
 
     </div>
