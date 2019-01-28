@@ -98,9 +98,13 @@ class RunPage extends Component {
       </ul>
     </nav>
 
+    const touchControls = <div className="touchControls">
+      <div className="touchControls-startButton">Start</div>
+    </div>
+
     return (
       <div className="RunPage">
-        {useTouchscreenControls ? null : navBar}
+        {useTouchscreenControls ? touchControls : navBar}
 
         {this.state.error ? (
           this.state.error

@@ -8,3 +8,15 @@
 .RunPage .screen-container {
   text-align: center;
 }
+
+
+.touchControls-startButton {
+	background: red;
+	width: 100px;
+	height: 50px;
+	position: fixed;
+	bottom: 2%;
+	left: 60%;
+	line-height: 50px;
+	text-align: center;
+}
