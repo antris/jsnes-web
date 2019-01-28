@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import config from "./config";
 import ControlsModal from "./ControlsModal";
 import Emulator from "./Emulator";
+import EventEmitter from "./EventEmitter";
 
 import "./RunPage.css";
 
@@ -50,7 +51,8 @@ class RunPage extends Component {
       controlsModalOpen: false,
       loading: true,
       loadedPercent: 3,
-      error: null
+      error: null,
+      touchControlSignal: new EventEmitter()
     };
   }
 
@@ -99,7 +101,12 @@ class RunPage extends Component {
     </nav>
 
     const touchControls = <div className="touchControls">
-      <div className="touchControls-startButton">Start</div>
+      <div
+        className="touchControls-startButton"
+        onTouchStart={() => this.state.touchControlSignal.emit('start')}
+      >
+        Start
+      </div>
     </div>
 
     return (
@@ -127,6 +134,7 @@ class RunPage extends Component {
               />
             ) : this.state.romData ? (
               <Emulator
+                touchControlSignal={this.state.touchControlSignal}
                 romData={this.state.romData}
                 paused={this.state.paused}
                 ref={emulator => {

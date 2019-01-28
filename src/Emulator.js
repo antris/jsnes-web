@@ -74,6 +74,8 @@ class Emulator extends Component {
       onAudioSample: this.speakers.writeSample
     });
 
+    this.props.touchControlSignal.on('start', () => alert('pressed start'))
+
     // For debugging. (["nes"] instead of .nes to avoid VS Code type errors.)
     window["nes"] = this.nes;
 
