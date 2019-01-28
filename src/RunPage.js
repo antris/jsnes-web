@@ -38,6 +38,19 @@ function loadBinary(path, callback, handleProgress) {
   return req;
 }
 
+class TouchControl extends Component {
+  render() {
+    return (
+      <div
+        className={"touchControl touchControl-"+this.props.classNameForStyling}
+        onTouchStart={() => { this.props.emitter.emit('buttonDown', this.props.button)}}
+        onTouchEnd={() => { this.props.emitter.emit('buttonUp', this.props.button)}}
+      >
+        {this.props.children}
+      </div>
+    )
+  }
+}
 /*
  * The UI for the emulator. Also responsible for loading ROM from URL or file.
  */
@@ -102,13 +115,17 @@ class RunPage extends Component {
     </nav>
 
     const touchControls = <div className="touchControls">
-      <div
-        className="touchControls-startButton"
-        onTouchStart={() => this.state.touchControlSignal.emit('buttonDown', Controller.BUTTON_START)}
-        onTouchEnd={() => this.state.touchControlSignal.emit('buttonUp', Controller.BUTTON_START)}
-      >
-        Start
+      <TouchControl classNameForStyling="start" button={Controller.BUTTON_START} emitter={this.state.touchControlSignal}>Start</TouchControl>
+      <TouchControl classNameForStyling="select" button={Controller.BUTTON_SELECT} emitter={this.state.touchControlSignal}>Select</TouchControl>
+      <TouchControl classNameForStyling="a" button={Controller.BUTTON_A} emitter={this.state.touchControlSignal}>A</TouchControl>
+      <TouchControl classNameForStyling="b" button={Controller.BUTTON_B} emitter={this.state.touchControlSignal}>B</TouchControl>
+      <div className="touchControls-dPad">
+        <TouchControl classNameForStyling="up" button={Controller.BUTTON_UP} emitter={this.state.touchControlSignal}>U</TouchControl>
+        <TouchControl classNameForStyling="down" button={Controller.BUTTON_DOWN} emitter={this.state.touchControlSignal}>D</TouchControl>
+        <TouchControl classNameForStyling="left" button={Controller.BUTTON_LEFT} emitter={this.state.touchControlSignal}>L</TouchControl>
+        <TouchControl classNameForStyling="right" button={Controller.BUTTON_RIGHT} emitter={this.state.touchControlSignal}>R</TouchControl>
       </div>
+
     </div>
 
     return (
