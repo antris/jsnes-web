@@ -8,6 +8,10 @@ import GamepadController from "./GamepadController";
 import KeyboardController from "./KeyboardController";
 import Screen from "./Screen";
 import Speakers from "./Speakers";
+import {Controller} from "jsnes";
+
+
+const useTouchscreenControls = /iPhone/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent)
 
 /*
  * Runs the emulator.
@@ -74,8 +78,6 @@ class Emulator extends Component {
       onAudioSample: this.speakers.writeSample
     });
 
-    this.props.touchControlSignal.on('start', () => alert('pressed start'))
-
     // For debugging. (["nes"] instead of .nes to avoid VS Code type errors.)
     window["nes"] = this.nes;
 
@@ -85,32 +87,38 @@ class Emulator extends Component {
     });
 
     // Set up gamepad and keyboard
-    this.gamepadController = new GamepadController({
-      onButtonDown: this.nes.buttonDown,
-      onButtonUp: this.nes.buttonUp
-    });
 
-    this.gamepadController.loadGamepadConfig();
-    this.gamepadPolling = this.gamepadController.startPolling();
+    if (useTouchscreenControls) {
+      this.props.touchControlSignal.on('buttonDown', (key) => this.nes.controllers[1].buttonDown(key))
+      this.props.touchControlSignal.on('buttonUp', (key) => this.nes.controllers[1].buttonUp(key))
+    } else {
+      this.gamepadController = new GamepadController({
+        onButtonDown: this.nes.buttonDown,
+        onButtonUp: this.nes.buttonUp
+      });
 
-    this.keyboardController = new KeyboardController({
-      onButtonDown: this.gamepadController.disableIfGamepadEnabled(
-        this.nes.buttonDown
-      ),
-      onButtonUp: this.gamepadController.disableIfGamepadEnabled(
-        this.nes.buttonUp
-      )
-    });
+      this.gamepadController.loadGamepadConfig();
+      this.gamepadPolling = this.gamepadController.startPolling();
 
-    // Load keys from localStorage (if they exist)
-    this.keyboardController.loadKeys();
+      this.keyboardController = new KeyboardController({
+        onButtonDown: this.gamepadController.disableIfGamepadEnabled(
+          this.nes.buttonDown
+        ),
+        onButtonUp: this.gamepadController.disableIfGamepadEnabled(
+          this.nes.buttonUp
+        )
+      });
 
-    document.addEventListener("keydown", this.keyboardController.handleKeyDown);
-    document.addEventListener("keyup", this.keyboardController.handleKeyUp);
-    document.addEventListener(
-      "keypress",
-      this.keyboardController.handleKeyPress
-    );
+      // Load keys from localStorage (if they exist)
+      this.keyboardController.loadKeys();
+
+      document.addEventListener("keydown", this.keyboardController.handleKeyDown);
+      document.addEventListener("keyup", this.keyboardController.handleKeyUp);
+      document.addEventListener(
+        "keypress",
+        this.keyboardController.handleKeyPress
+      );
+    }
 
     this.nes.loadROM(this.props.romData);
     this.start();

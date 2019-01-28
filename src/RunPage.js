@@ -6,6 +6,7 @@ import config from "./config";
 import ControlsModal from "./ControlsModal";
 import Emulator from "./Emulator";
 import EventEmitter from "./EventEmitter";
+import { Controller } from "jsnes";
 
 import "./RunPage.css";
 
@@ -103,7 +104,8 @@ class RunPage extends Component {
     const touchControls = <div className="touchControls">
       <div
         className="touchControls-startButton"
-        onTouchStart={() => this.state.touchControlSignal.emit('start')}
+        onTouchStart={() => this.state.touchControlSignal.emit('buttonDown', Controller.BUTTON_START)}
+        onTouchEnd={() => this.state.touchControlSignal.emit('buttonUp', Controller.BUTTON_START)}
       >
         Start
       </div>
