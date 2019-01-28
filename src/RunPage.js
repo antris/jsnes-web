@@ -8,6 +8,8 @@ import Emulator from "./Emulator";
 
 import "./RunPage.css";
 
+const useTouchscreenControls = /iPhone/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent)
+
 function loadBinary(path, callback, handleProgress) {
   var req = new XMLHttpRequest();
   req.open("GET", path);
@@ -53,49 +55,52 @@ class RunPage extends Component {
   }
 
   render() {
+
+    const navBar = <nav
+      className="navbar navbar-expand"
+      ref={el => {
+        this.navbar = el;
+      }}
+    >
+      <ul className="navbar-nav" style={{ width: "200px" }}>
+        <li className="navitem">
+          <Link to="/" className="nav-link">
+            &lsaquo; Back
+          </Link>
+        </li>
+      </ul>
+      <ul className="navbar-nav ml-auto mr-auto">
+        <li className="navitem">
+          <span className="navbar-text mr-3">
+            {this.state.rom && this.state.rom.description}
+          </span>
+        </li>
+      </ul>
+      <ul className="navbar-nav" style={{ width: "200px" }}>
+        <li className="navitem">
+          <Button
+            outline
+            color="primary"
+            onClick={this.toggleControlsModal}
+            className="mr-3"
+          >
+            Controls
+          </Button>
+          <Button
+            outline
+            color="primary"
+            onClick={this.handlePauseResume}
+            disabled={!this.state.running}
+          >
+            {this.state.paused ? "Resume" : "Pause"}
+          </Button>
+        </li>
+      </ul>
+    </nav>
+
     return (
       <div className="RunPage">
-        <nav
-          className="navbar navbar-expand"
-          ref={el => {
-            this.navbar = el;
-          }}
-        >
-          <ul className="navbar-nav" style={{ width: "200px" }}>
-            <li className="navitem">
-              <Link to="/" className="nav-link">
-                &lsaquo; Back
-              </Link>
-            </li>
-          </ul>
-          <ul className="navbar-nav ml-auto mr-auto">
-            <li className="navitem">
-              <span className="navbar-text mr-3">
-                {this.state.rom && this.state.rom.description}
-              </span>
-            </li>
-          </ul>
-          <ul className="navbar-nav" style={{ width: "200px" }}>
-            <li className="navitem">
-              <Button
-                outline
-                color="primary"
-                onClick={this.toggleControlsModal}
-                className="mr-3"
-              >
-                Controls
-              </Button>
-              <Button
-                outline
-                color="primary"
-                onClick={this.handlePauseResume}
-                disabled={!this.state.running}
-              >
-                {this.state.paused ? "Resume" : "Pause"}
-              </Button>
-            </li>
-          </ul>
-        </nav>
+        {useTouchscreenControls ? null : navBar}
 
         {this.state.error ? (
           this.state.error
@@ -206,7 +211,7 @@ class RunPage extends Component {
   };
 
   layout = () => {
-    let navbarHeight = parseFloat(window.getComputedStyle(this.navbar).height);
+    let navbarHeight = useTouchscreenControls ? 0 : parseFloat(window.getComputedStyle(this.navbar).height);
     this.screenContainer.style.height = `${window.innerHeight -
       navbarHeight}px`;
     if (this.emulator) {
