@@ -10,7 +10,8 @@ import { Controller } from "jsnes";
 
 import "./RunPage.css";
 
-const useTouchscreenControls = /iPhone/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent)
+const useTouchscreenControls =
+  /iPhone/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent);
 
 function loadBinary(path, callback, handleProgress) {
   var req = new XMLHttpRequest();
@@ -42,13 +43,19 @@ class TouchControl extends Component {
   render() {
     return (
       <div
-        className={"touchControl touchControl-"+this.props.classNameForStyling}
-        onTouchStart={() => { this.props.emitter.emit('buttonDown', this.props.button)}}
-        onTouchEnd={() => { this.props.emitter.emit('buttonUp', this.props.button)}}
+        className={
+          "touchControl touchControl-" + this.props.classNameForStyling
+        }
+        onTouchStart={() => {
+          this.props.emitter.emit("buttonDown", this.props.button);
+        }}
+        onTouchEnd={() => {
+          this.props.emitter.emit("buttonUp", this.props.button);
+        }}
       >
         {this.props.children}
       </div>
-    )
+    );
   }
 }
 /*
@@ -71,64 +78,114 @@ class RunPage extends Component {
   }
 
   render() {
+    const navBar = (
+      <nav
+        className="navbar navbar-expand"
+        ref={el => {
+          this.navbar = el;
+        }}
+      >
+        <ul className="navbar-nav" style={{ width: "200px" }}>
+          <li className="navitem">
+            <Link to="/" className="nav-link">
+              &lsaquo; Back
+            </Link>
+          </li>
+        </ul>
+        <ul className="navbar-nav ml-auto mr-auto">
+          <li className="navitem">
+            <span className="navbar-text mr-3">
+              {this.state.rom && this.state.rom.description}
+            </span>
+          </li>
+        </ul>
+        <ul className="navbar-nav" style={{ width: "200px" }}>
+          <li className="navitem">
+            <Button
+              outline
+              color="primary"
+              onClick={this.toggleControlsModal}
+              className="mr-3"
+            >
+              Controls
+            </Button>
+            <Button
+              outline
+              color="primary"
+              onClick={this.handlePauseResume}
+              disabled={!this.state.running}
+            >
+              {this.state.paused ? "Resume" : "Pause"}
+            </Button>
+          </li>
+        </ul>
+      </nav>
+    );
 
-    const navBar = <nav
-      className="navbar navbar-expand"
-      ref={el => {
-        this.navbar = el;
-      }}
-    >
-      <ul className="navbar-nav" style={{ width: "200px" }}>
-        <li className="navitem">
-          <Link to="/" className="nav-link">
-            &lsaquo; Back
-          </Link>
-        </li>
-      </ul>
-      <ul className="navbar-nav ml-auto mr-auto">
-        <li className="navitem">
-          <span className="navbar-text mr-3">
-            {this.state.rom && this.state.rom.description}
-          </span>
-        </li>
-      </ul>
-      <ul className="navbar-nav" style={{ width: "200px" }}>
-        <li className="navitem">
-          <Button
-            outline
-            color="primary"
-            onClick={this.toggleControlsModal}
-            className="mr-3"
-          >
-            Controls
-          </Button>
-          <Button
-            outline
-            color="primary"
-            onClick={this.handlePauseResume}
-            disabled={!this.state.running}
-          >
-            {this.state.paused ? "Resume" : "Pause"}
-          </Button>
-        </li>
-      </ul>
-    </nav>
-
-    const touchControls = <div className="touchControls">
-      <TouchControl classNameForStyling="start" button={Controller.BUTTON_START} emitter={this.state.touchControlSignal}>Start</TouchControl>
-      <TouchControl classNameForStyling="select" button={Controller.BUTTON_SELECT} emitter={this.state.touchControlSignal}>Select</TouchControl>
-      <TouchControl classNameForStyling="a" button={Controller.BUTTON_A} emitter={this.state.touchControlSignal}>A</TouchControl>
-      <TouchControl classNameForStyling="b" button={Controller.BUTTON_B} emitter={this.state.touchControlSignal}>B</TouchControl>
-      <div className="touchControls-dPad">
-        <div className="touchControls-dPad-wrapper">
-          <TouchControl classNameForStyling="up" button={Controller.BUTTON_UP} emitter={this.state.touchControlSignal}>U</TouchControl>
-          <TouchControl classNameForStyling="down" button={Controller.BUTTON_DOWN} emitter={this.state.touchControlSignal}>D</TouchControl>
-          <TouchControl classNameForStyling="left" button={Controller.BUTTON_LEFT} emitter={this.state.touchControlSignal}>L</TouchControl>
-          <TouchControl classNameForStyling="right" button={Controller.BUTTON_RIGHT} emitter={this.state.touchControlSignal}>R</TouchControl>
+    const touchControls = (
+      <div className="touchControls">
+        <TouchControl
+          classNameForStyling="start"
+          button={Controller.BUTTON_START}
+          emitter={this.state.touchControlSignal}
+        >
+          Start
+        </TouchControl>
+        <TouchControl
+          classNameForStyling="select"
+          button={Controller.BUTTON_SELECT}
+          emitter={this.state.touchControlSignal}
+        >
+          Select
+        </TouchControl>
+        <TouchControl
+          classNameForStyling="a"
+          button={Controller.BUTTON_A}
+          emitter={this.state.touchControlSignal}
+        >
+          A
+        </TouchControl>
+        <TouchControl
+          classNameForStyling="b"
+          button={Controller.BUTTON_B}
+          emitter={this.state.touchControlSignal}
+        >
+          B
+        </TouchControl>
+        <div className="touchControls-dPad">
+          <div className="touchControls-dPad-wrapper">
+            <TouchControl
+              classNameForStyling="up"
+              button={Controller.BUTTON_UP}
+              emitter={this.state.touchControlSignal}
+            >
+              U
+            </TouchControl>
+            <TouchControl
+              classNameForStyling="down"
+              button={Controller.BUTTON_DOWN}
+              emitter={this.state.touchControlSignal}
+            >
+              D
+            </TouchControl>
+            <TouchControl
+              classNameForStyling="left"
+              button={Controller.BUTTON_LEFT}
+              emitter={this.state.touchControlSignal}
+            >
+              L
+            </TouchControl>
+            <TouchControl
+              classNameForStyling="right"
+              button={Controller.BUTTON_RIGHT}
+              emitter={this.state.touchControlSignal}
+            >
+              R
+            </TouchControl>
+          </div>
         </div>
       </div>
-
-    </div>
+    );
 
     return (
       <div className="RunPage">
@@ -244,7 +301,9 @@ class RunPage extends Component {
   };
 
   layout = () => {
-    let navbarHeight = useTouchscreenControls ? 0 : parseFloat(window.getComputedStyle(this.navbar).height);
+    let navbarHeight = useTouchscreenControls
+      ? 0
+      : parseFloat(window.getComputedStyle(this.navbar).height);
     this.screenContainer.style.height = `${window.innerHeight -
       navbarHeight}px`;
     if (this.emulator) {

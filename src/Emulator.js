@@ -8,10 +8,10 @@ import GamepadController from "./GamepadController";
 import KeyboardController from "./KeyboardController";
 import Screen from "./Screen";
 import Speakers from "./Speakers";
-import {Controller} from "jsnes";
+import { Controller } from "jsnes";
 
-
-const useTouchscreenControls = /iPhone/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent)
+const useTouchscreenControls =
+  /iPhone/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent);
 
 /*
  * Runs the emulator.
@@ -89,8 +89,12 @@ class Emulator extends Component {
     // Set up gamepad and keyboard
 
     if (useTouchscreenControls) {
-      this.props.touchControlSignal.on('buttonDown', (key) => this.nes.controllers[1].buttonDown(key))
-      this.props.touchControlSignal.on('buttonUp', (key) => this.nes.controllers[1].buttonUp(key))
+      this.props.touchControlSignal.on("buttonDown", key =>
+        this.nes.controllers[1].buttonDown(key)
+      );
+      this.props.touchControlSignal.on("buttonUp", key =>
+        this.nes.controllers[1].buttonUp(key)
+      );
     } else {
       this.gamepadController = new GamepadController({
         onButtonDown: this.nes.buttonDown,
@@ -112,7 +116,10 @@ class Emulator extends Component {
       // Load keys from localStorage (if they exist)
       this.keyboardController.loadKeys();
 
-      document.addEventListener("keydown", this.keyboardController.handleKeyDown);
+      document.addEventListener(
+        "keydown",
+        this.keyboardController.handleKeyDown
+      );
       document.addEventListener("keyup", this.keyboardController.handleKeyUp);
       document.addEventListener(
         "keypress",
