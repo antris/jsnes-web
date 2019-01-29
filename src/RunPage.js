@@ -7,11 +7,9 @@ import ControlsModal from "./ControlsModal";
 import Emulator from "./Emulator";
 import EventEmitter from "./EventEmitter";
 import { Controller } from "jsnes";
+import UseTouchscreenControls from "./UseTouchscreenControls";
 
 import "./RunPage.css";
-
-const useTouchscreenControls =
-  /iPhone/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent);
 
 function loadBinary(path, callback, handleProgress) {
   var req = new XMLHttpRequest();
@@ -189,7 +187,7 @@ class RunPage extends Component {
 
     return (
       <div className="RunPage">
-        {useTouchscreenControls ? touchControls : navBar}
+        {UseTouchscreenControls ? touchControls : navBar}
 
         {this.state.error ? (
           this.state.error
@@ -301,7 +299,7 @@ class RunPage extends Component {
   };
 
   layout = () => {
-    let navbarHeight = useTouchscreenControls
+    let navbarHeight = UseTouchscreenControls
       ? 0
       : parseFloat(window.getComputedStyle(this.navbar).height);
     this.screenContainer.style.height = `${window.innerHeight -

@@ -9,9 +9,7 @@ import KeyboardController from "./KeyboardController";
 import Screen from "./Screen";
 import Speakers from "./Speakers";
 import { Controller } from "jsnes";
-
-const useTouchscreenControls =
-  /iPhone/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent);
+import UseTouchscreenControls from "./UseTouchscreenControls";
 
 /*
  * Runs the emulator.
@@ -88,7 +86,7 @@ class Emulator extends Component {
 
     // Set up gamepad and keyboard
 
-    if (useTouchscreenControls) {
+    if (UseTouchscreenControls) {
       this.props.touchControlSignal.on("buttonDown", key =>
         this.nes.controllers[1].buttonDown(key)
       );
